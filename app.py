@@ -1,10 +1,19 @@
 from core.pdf_loader import load_pdf
+from core.chunking import chunk_text
+from core.embeddings import EmbeddingStore
 
-pdf_path = "data/data1.pdf"  # Replace with your actual file name
+pdf_path = "data/sample.pdf"
 
+# 1️⃣ Load PDF
 text = load_pdf(pdf_path)
 
-print("\n--- PDF Loaded Successfully ---\n")
-print(f"Total Characters Extracted: {len(text)}\n")
-print("Preview:\n")
-print(text[:500])
+# 2️⃣ Chunk
+chunks = chunk_text(text)
+
+print(f"Chunks created: {len(chunks)}")
+
+# 3️⃣ Create embeddings + FAISS
+store = EmbeddingStore()
+store.create_embeddings(chunks)
+
+print("\nFAISS index ready!")

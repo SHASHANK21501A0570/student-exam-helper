@@ -12,7 +12,7 @@ class Retriever:
         self.chunks = chunks
         self.model = SentenceTransformer(model_name)
 
-    def retrieve(self, query: str, top_k: int = 3):
+    def retrieve(self, query: str, top_k: int = 5):
         """
         Retrieve top_k most relevant chunks for a query.
 

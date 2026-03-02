@@ -1,7 +1,6 @@
 transformers
 sentence-transformers
 faiss-cpu
-llama-cpp-python
 sqlite3
 pypdf
 flask

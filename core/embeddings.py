@@ -1,6 +1,10 @@
+from importlib.resources import path
+
 import numpy as np
 import faiss
 from sentence_transformers import SentenceTransformer
+import pickle
+import os
 class EmbeddingStore:
     """
     Class handles the embedding generation and faiss index creation
@@ -41,6 +45,29 @@ class EmbeddingStore:
 
     def get_chunks(self):
         return self.chunks
+    
+    def save_index(self, path="vectorstore"):
+        os.makedirs(path, exist_ok=True)
+
+        faiss.write_index(self.index, f"{path}/index.faiss")
+
+        with open(f"{path}/chunks.pkl", "wb") as f:
+            pickle.dump(self.chunks, f)
+
+        print("Vector database saved.")
+
+    def load_index(self, path="vectorstore"):
+        if not os.path.exists(f"{path}/index.faiss"):
+            return False
+
+        self.index = faiss.read_index(f"{path}/index.faiss")
+
+        with open(f"{path}/chunks.pkl", "rb") as f:
+            self.chunks = pickle.load(f)
+
+        print("Vector database loaded.")
+
+        return True
 
 
 

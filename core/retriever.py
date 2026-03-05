@@ -22,8 +22,9 @@ class Retriever:
         distances, indices = self.index.search(query_embedding, top_k)
 
         results = [
-        (self.chunks[i], int(i))
-        for i in indices[0]
-    ]
+    (self.chunks[i]["text"], self.chunks[i]["source"], int(i))
+    for i in indices[0]
+    if i != -1
+]
 
         return results

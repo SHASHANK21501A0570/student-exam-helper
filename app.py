@@ -7,11 +7,23 @@ from core.llm_loader import LLM
 
 print("Loading document...")
 
-pdf_path = "data/sample.pdf"
+from core.document_loader import load_documents
+
+documents = load_documents("data")
+
+chunks = []
 
 
-text = load_pdf(pdf_path)
-chunks = chunk_text(text)
+for doc in documents:
+    doc_chunks = chunk_text(doc["text"])
+
+    for chunk in doc_chunks:
+        chunks.append({
+            "text": chunk,
+            "source": doc["source"]
+        })
+
+
 
 store = EmbeddingStore()
 
@@ -60,7 +72,7 @@ while True:
     context = "\n\n".join([r[0] for r in results])
 
     prompt = f"""
-```
+
 
 You are a helpful academic study assistant.
 
@@ -91,8 +103,8 @@ Answer:
 
     print("\n📚 Sources:")
 
-    for _, idx in results:
-        print(f"- Chunk {idx}")
+    for _, source, idx in results:
+        print(f"- {source} (chunk {idx})")
 
     print("\n" + "-"*50 + "\n")
 

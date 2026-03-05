@@ -27,7 +27,8 @@ class EmbeddingStore:
             raise ValueError("No chunks provided for embedding.")
         print("Generating embeddings for chunks...")
 
-        embeddings=self.model.encode(chunks,convert_to_numpy=True,show_progress_bar=True)
+        texts = [chunk["text"] for chunk in chunks]
+        embeddings = self.model.encode(texts, convert_to_numpy=True, show_progress_bar=True)
         dimension = embeddings.shape[1]
 
         print(f"Embedding dimension: {dimension}")

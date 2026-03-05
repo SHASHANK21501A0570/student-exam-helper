@@ -1,4 +1,5 @@
 import requests
+from transformers import data
 
 
 class LLM:
@@ -48,4 +49,6 @@ class LLM:
             }
         )
 
-        return response.json()["response"].strip()
+        data = response.json()
+        print("DEBUG:", data)
+        return data.get("response", "").strip()
